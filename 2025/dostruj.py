@@ -7,7 +7,8 @@ from planescolor import utworz_maske, znajdz_kontury
 PLANE_INDEX = 6
 PLANE_NAME = f"samolot{PLANE_INDEX:02d}.jpg"
 THRESHOLD = 50
-THRESHOLD_MODE = "saturation"
+THRESHOLD_MODE_OPTIONS = ("gray", "saturation", "combined")
+THRESHOLD_MODE = "combined"
 CLOSE_ITERATIONS = 1
 CLOSE_KERNEL_SIZE = 3
 IGNORE_BORDER = False
@@ -28,10 +29,10 @@ def dostruj():
     cv2.namedWindow(preview)
     cv2.createTrackbar("Prog", controls, THRESHOLD, 255, lambda _: None)
     cv2.createTrackbar(
-        "Kanal (0 jasnosc, 1 nasycenie)",
+        "Kanal (0 jasnosc, 1 nasycenie, 2 polaczone)",
         controls,
-        int(THRESHOLD_MODE == "saturation"),
-        1,
+        THRESHOLD_MODE_OPTIONS.index(THRESHOLD_MODE),
+        len(THRESHOLD_MODE_OPTIONS) - 1,
         lambda _: None,
     )
     cv2.createTrackbar(
@@ -58,13 +59,11 @@ def dostruj():
 
     while True:
         threshold = cv2.getTrackbarPos("Prog", controls)
-        threshold_mode = (
-            "saturation"
-            if cv2.getTrackbarPos(
-                "Kanal (0 jasnosc, 1 nasycenie)", controls
+        threshold_mode = THRESHOLD_MODE_OPTIONS[
+            cv2.getTrackbarPos(
+                "Kanal (0 jasnosc, 1 nasycenie, 2 polaczone)", controls
             )
-            else "gray"
-        )
+        ]
         close_iterations = cv2.getTrackbarPos(
             "Iteracje zamykania", controls
         )
