@@ -3,8 +3,8 @@ import numpy as np
 from scipy.io import wavfile
 
 
-def measure_f0():
-    pass
+def measure_f0(signal,sr):
+    return 0
 
 
 
@@ -17,7 +17,6 @@ def pick_gender(file_path: str, border_hz: float = 165.0):
 
 def main():
     if len(sys.argv) < 2:
-        print("E")
         return
 
     file_path = sys.argv[1]
@@ -25,7 +24,7 @@ def main():
         gender, _ = pick_gender(file_path)
         print(gender)
     except Exception:
-        print("E")
+        return
 
 
 if __name__ == "__main__":
